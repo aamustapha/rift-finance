@@ -27,6 +27,9 @@ class RiftClerk extends Component {
         let polarity = 1
         if (this.state.action === 'withdraw') {
             polarity = -1
+            if (!window.confirm("Choosing withdraw would withdraw your entire balance and accrued interest. Do you want to continue?")) {
+                return
+            }
         } else if (this.state.action === '') {
             return window.alert('Please choose weather to withdraw or deposit')
         }

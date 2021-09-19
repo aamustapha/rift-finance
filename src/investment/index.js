@@ -17,7 +17,13 @@ class RiftInvestment extends Component {
 
     updateBalance(amount) {
         const info = this.state.info
-        info[1].value += amount
+        if (amount >= 0) {
+            info[1].value += amount
+        } else {
+            amount = -(info[1].value + info[2].value)
+            info[1].value = 0
+            info[2].value = 0
+        }
         this.setState({...this.state, info})
         this.props.onBalanceUpdate(amount)
     }
