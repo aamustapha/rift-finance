@@ -3,15 +3,40 @@ import RiftHeader from "./header";
 import RiftInvestment from "./investment";
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            networks: [
+                {name: 'Compound', rate: 5, balance: 0},
+                {name: 'Aave', rate: 3, balance: 0},
+                {name: 'Curve', rate: 2.5, balance: 0}
+            ],
+            consolidatedBalance: 1000
+        }
+    }
+
+    handleBalanceUpdate(amount) {
+        let consolidatedBalance = this.state.consolidatedBalance
+        consolidatedBalance -= amount
+
+        this.setState({...this.state, consolidatedBalance})
+    }
+
     render() {
         return (
             <div>
-                <RiftHeader balance={500}/>
+                <RiftHeader balance={this.state.consolidatedBalance} onBalanceUpdated={this.handleBalanceUpdate}/>
                 <hr/>
-                <div className="container mx-auto m-2 grid md:grid-cols-2 lg:grid-cols-3 ">
-                    <RiftInvestment initialBalance={100} interestRate={4} network="Compound" />
-                    <RiftInvestment initialBalance={100} interestRate={4} network="Aave" />
-                    <RiftInvestment initialBalance={100} interestRate={4} network="Curve" />
+                <div className="container mx-auto m-2 grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {this.state.networks.map((network, index) => {
+                        return (
+                            <RiftInvestment key={index} initialBalance={network.balance} interestRate={network.rate}
+                                            network={network.name}
+                                            onBalanceUpdate={(amount) => this.handleBalanceUpdate(amount)}/>
+                        )
+                    })}
                 </div>
             </div>
 
