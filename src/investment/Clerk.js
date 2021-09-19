@@ -5,7 +5,7 @@ class RiftClerk extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amount: 100,
+            amount: 0,
             action: 'deposit'
         }
     }
@@ -27,6 +27,9 @@ class RiftClerk extends Component {
         let polarity = 1
         if (this.state.action === 'withdraw') {
             polarity = -1
+            if (this.state.amount > this.props.totalOwnership) {
+                return window.alert("You are not allowed to withdraw morethan you own. Withdraw lesser amount")
+            }
             if (!window.confirm("Choosing withdraw would withdraw your entire balance and accrued interest. Do you want to continue?")) {
                 return
             }
@@ -37,6 +40,7 @@ class RiftClerk extends Component {
     }
 
     render() {
+        const isCommitDisabled = this.state.action === '' || this.state.amount <= 0
         return (
             <>
                 <div className="text-sm mt-6 mb-3">
@@ -57,8 +61,8 @@ class RiftClerk extends Component {
                                onChange={this.updateAmount.bind(this)}/>
                     </label>
 
-                    <button className={"text-white bg-blue-600 block mx-auto px-10 py-3 uppercase font-bold" + `${this.state.action === '' ? ' cursor-not-allowed' : ' hover:bg-blue-700 '}`}
-                            disabled={this.state.action === ''} onClick={this.commit.bind(this)}> Confirm
+                    <button className={"text-white bg-blue-600 block mx-auto px-10 py-3 uppercase font-bold" + `${isCommitDisabled ? ' cursor-not-allowed' : ' hover:bg-blue-700 '}`}
+                            disabled={isCommitDisabled} onClick={this.commit.bind(this)}> Confirm
                     </button>
 
                 </div>

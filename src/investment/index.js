@@ -17,7 +17,7 @@ class RiftInvestment extends Component {
 
     updateBalance(amount) {
         const info = this.state.info
-        if (amount >= 0) {
+        if (amount > 0) {
             info[1].value += amount
         } else {
             amount = -(info[1].value + info[2].value)
@@ -60,11 +60,12 @@ class RiftInvestment extends Component {
     }
 
     render() {
+        const totalOwnership = +this.state.info[1].value + +this.state.info[2].value
         return (
             <div className="bg-gradient-to-br from-blue-100 via-blue-100 to-purple-100 rounded p-4 my-2">
                 <h2 className="text-center text-xl font-bold">{this.props.network}</h2>
                 <RiftInfo information={this.state.info}/>
-                <RiftClerk onBalanceUpdate={this.updateBalance.bind(this)}/>
+                <RiftClerk onBalanceUpdate={this.updateBalance.bind(this)} totalOwnership={totalOwnership}/>
 
             </div>
         )
