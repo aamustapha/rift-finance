@@ -17,7 +17,7 @@ class RiftTimelapse extends Component {
     }
 
     commit () {
-        console.log('Commit timelapse')
+        this.props.fastForward(this.state.ffDaysCount)
     }
 
     render() {

@@ -5,7 +5,7 @@ class RiftClerk extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amount: 10,
+            amount: 100,
             action: 'deposit'
         }
     }

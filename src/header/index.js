@@ -8,7 +8,7 @@ class RiftHeader extends Component {
         return (
             <div className="container mx-auto my-2 flex justify-between ">
                 <RiftBalance balance={this.props.balance}></RiftBalance>
-                <RiftTimelapse></RiftTimelapse>
+                <RiftTimelapse fastForward={this.props.fastForward}></RiftTimelapse>
             </div>
         )
     }

@@ -15,11 +15,42 @@ class RiftInvestment extends Component {
         }
     }
 
-    updateBalance (amount) {
+    updateBalance(amount) {
         const info = this.state.info
         info[1].value += amount
         this.setState({...this.state, info})
         this.props.onBalanceUpdate(amount)
+    }
+
+    accrueCompoundInterest(days) {
+        const interestRate = this.props.interestRate / 100
+        const balance = +this.state.info[1].value + +this.state.info[2].value
+
+        const newBalance = balance * (1 + (interestRate / 365)) ** days
+        const interestAccrued = newBalance - +this.state.info[1].value
+        const info = this.state.info
+
+        info[2].value = interestAccrued
+        this.setState({...this.state, info})
+        this.props.onFastforwardComplete()
+    }
+
+    accrueSimpleInterest(days) {
+        const interestRate = this.props.interestRate / 100
+        const balance = +this.state.info[1].value
+
+        const simpleInterest = balance * interestRate * (days / 365)
+        const info = this.state.info
+
+        info[2].value = simpleInterest
+        this.setState({...this.state, info})
+        this.props.onFastforwardComplete()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.fastforward !== this.props.fastforward && this.props.fastforward !== 0) {
+            this.accrueCompoundInterest(this.props.fastforward)
+        }
     }
 
     render() {
